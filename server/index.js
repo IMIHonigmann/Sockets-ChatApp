@@ -1,13 +1,14 @@
+const express = require('express');
+const http = require('http');
 
-const http = require('http').createServer();
+const app = express();
+const server = http.createServer(app);
 
-const io = require('socket.io')(http, {
+const io = require('socket.io')(server, {
     cors: { origin: "*" }
 });
 
 io.on('connection', (socket) => {
-    // console.log(socket.id + ' connected');
-
     socket.on('joinRoom', (data, cb) => {
         console.log('User joined in ' + data);
         socket.join(data);
@@ -27,4 +28,5 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(8080, () => console.log('listening on http://localhost:8080') );
+const PORT = 8080;
+server.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
